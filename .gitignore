@@ -1,0 +1,7 @@
+.env
+.venv/
+__pycache__/
+*.pyc
+fragment_market.db
+.pytest_cache/
+.idea/

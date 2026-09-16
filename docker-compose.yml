@@ -1,0 +1,9 @@
+services:
+  fragment-trading-agent:
+    build: .
+    container_name: fragment_agent_prod
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./fragment_market.db:/app/fragment_market.db
