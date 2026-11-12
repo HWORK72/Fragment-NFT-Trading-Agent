@@ -1,11 +1,11 @@
-import asyncio
 from decimal import Decimal
 import logging
 import socket
 from typing import Any
 import aiohttp
+from src.fragment_agent.logger import get_logger
 
-logger: logging.Logger = logging.getLogger("TelegramAlerts")
+logger: logging.Logger = get_logger("TelegramAlerts")
 
 
 class TelegramAlertService:

@@ -3,5 +3,11 @@
 __pycache__/
 *.pyc
 fragment_market.db
+logs.txt
 .pytest_cache/
 .idea/
+.vscode/
+bin/
+obj/
+*.user
+*.suo

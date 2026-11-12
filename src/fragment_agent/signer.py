@@ -1,14 +1,13 @@
-import asyncio
 import base64
 from decimal import Decimal
 import logging
-import sys
 from typing import Any
 import aiohttp
 from pytoniq import WalletV4R2
-from pytoniq_core import Address, Cell
+from pytoniq_core import Cell
+from src.fragment_agent.logger import get_logger
 
-logger: logging.Logger = logging.getLogger("TonSigner")
+logger: logging.Logger = get_logger("TonSigner")
 
 
 class OfflineProviderStub:
@@ -33,7 +32,7 @@ class TonTransactionSigner:
     async def initialize(self) -> None:
         headers: dict[str, str] = {
             "Accept": "application/json",
-            "User-Agent": "FragmentTradingAgent/1.0",
+            "User-Agent": "FragmentTradingAgent/2.0",
         }
         if self._api_key:
             headers["X-API-Key"] = self._api_key
@@ -101,6 +100,17 @@ class TonTransactionSigner:
             logger.error("BOC broadcast error: %s", str(broadcast_err))
             return False
 
+    def _resolve_payload_body(self, payload_data: str | None) -> Cell | str | None:
+        if not payload_data:
+            return None
+        try:
+            decoded_bytes: bytes = base64.b64decode(payload_data, validate=True)
+            if len(decoded_bytes) > 2:
+                return Cell.one_from_boc(decoded_bytes)
+        except Exception:
+            pass
+        return payload_data
+
     async def execute_smart_contract_buy(
         self,
         destination_contract: str,
@@ -135,11 +145,17 @@ class TonTransactionSigner:
             logger.info("DRY-RUN GUARD: Transaction prepared and signed locally. Broadcast suppressed.")
             return True
 
+        if not destination_contract:
+            logger.error("LIVE EXECUTION ABORTED: Destination contract address is empty.")
+            return False
+
+        resolved_payload: Cell | str | None = self._resolve_payload_body(payload_data)
+
         transfer_cell: Cell = wallet.create_transfer_message(
             to_addr=destination_contract,
             amount=nanotons,
             seqno=current_seqno,
-            payload=payload_data,
+            payload=resolved_payload,
             send_mode=3,
         )
         boc_bytes: bytes = transfer_cell.to_boc()

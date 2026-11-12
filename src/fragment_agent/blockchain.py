@@ -1,10 +1,10 @@
-import asyncio
 from decimal import Decimal
 import logging
 from typing import Any
 import aiohttp
+from src.fragment_agent.logger import get_logger
 
-logger: logging.Logger = logging.getLogger("FragmentBlockchain")
+logger: logging.Logger = get_logger("FragmentBlockchain")
 
 
 class TonBlockchainClient:
@@ -21,7 +21,7 @@ class TonBlockchainClient:
     async def initialize(self) -> None:
         headers: dict[str, str] = {
             "Accept": "application/json",
-            "User-Agent": "FragmentTradingAgent/1.0",
+            "User-Agent": "FragmentTradingAgent/2.0",
         }
         if self._api_key:
             headers["X-API-Key"] = self._api_key

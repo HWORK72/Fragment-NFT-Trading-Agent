@@ -1,0 +1,11 @@
+*.cs linguist-detectable=true
+*.csproj linguist-detectable=true
+main.py linguist-detectable=true
+src/fragment_agent/*.py linguist-vendored=true
+test_engine.py linguist-vendored=true
+fragment_debug.html linguist-vendored=true
+*.html linguist-vendored=true
+*.md linguist-documentation=true
+*.yml linguist-vendored=true
+Dockerfile linguist-vendored=true
+requirements.txt linguist-vendored=true

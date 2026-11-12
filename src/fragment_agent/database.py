@@ -1,8 +1,8 @@
-import asyncio
 from datetime import datetime, timezone
 from decimal import Decimal
 import logging
-from typing import Any
+from pathlib import Path
+from typing import Any, Final
 from sqlalchemy import Boolean, DateTime, Integer, Numeric, String
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
@@ -11,10 +11,12 @@ from sqlalchemy.ext.asyncio import (
     create_async_engine,
 )
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from src.fragment_agent.logger import BASE_DIR, get_logger
 
-logger: logging.Logger = logging.getLogger("FragmentDB")
+logger: logging.Logger = get_logger("FragmentDB")
 
-DATABASE_URL: str = "sqlite+aiosqlite:///fragment_market.db"
+DB_FILE_PATH: Final[Path] = BASE_DIR / "fragment_market.db"
+DATABASE_URL: Final[str] = f"sqlite+aiosqlite:///{DB_FILE_PATH}"
 
 engine: AsyncEngine = create_async_engine(
     DATABASE_URL,
@@ -68,7 +70,7 @@ class TradeDecision(Base):
 async def init_database() -> None:
     async with engine.begin() as connection:
         await connection.run_sync(Base.metadata.create_all)
-    logger.info("Database schema verified and operational: fragment_market.db")
+    logger.info("Database schema verified and operational: %s", DB_FILE_PATH.name)
 
 
 async def bulk_record_market_ticks(ticks_data: list[dict[str, Any]]) -> None:
@@ -78,10 +80,10 @@ async def bulk_record_market_ticks(ticks_data: list[dict[str, Any]]) -> None:
         try:
             records: list[MarketTick] = [
                 MarketTick(
-                    collection=item["collection"],
-                    gift_num=item["gift_num"],
-                    price_ton=item["price_ton"],
-                    is_black_backdrop=item["is_black_backdrop"],
+                    collection=str(item["collection"]),
+                    gift_num=int(item["gift_num"]),
+                    price_ton=Decimal(str(item["price_ton"])),
+                    is_black_backdrop=bool(item["is_black_backdrop"]),
                 )
                 for item in ticks_data
             ]
@@ -99,12 +101,12 @@ async def bulk_record_trade_decisions(decisions_data: list[dict[str, Any]]) -> N
         try:
             records: list[TradeDecision] = [
                 TradeDecision(
-                    auction_id=item["auction_id"],
-                    collection=item["collection"],
-                    price_ton=item["price_ton"],
-                    floor_at_execution=item["floor_at_execution"],
-                    verdict=item["verdict"],
-                    reason=item["reason"],
+                    auction_id=str(item["auction_id"]),
+                    collection=str(item["collection"]),
+                    price_ton=Decimal(str(item["price_ton"])),
+                    floor_at_execution=Decimal(str(item["floor_at_execution"])),
+                    verdict=str(item["verdict"]),
+                    reason=str(item["reason"]),
                 )
                 for item in decisions_data
             ]
