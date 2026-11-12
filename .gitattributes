@@ -1,10 +1,10 @@
 *.cs linguist-language=C#
-*.csproj linguist-language=C#
-src/FragmentQuant.Engine/** linguist-language=C#
+*.csproj linguist-detectable
 
 *.py linguist-vendored
 *.html linguist-vendored
-*.yml linguist-vendored
 Dockerfile linguist-vendored
+docker-compose.yml linguist-vendored
+*.yml linguist-vendored
 requirements.txt linguist-vendored
 *.md linguist-documentation
