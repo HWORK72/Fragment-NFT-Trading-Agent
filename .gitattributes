@@ -1,10 +1,9 @@
-﻿*.cs linguist-detectable=true linguist-language=csharp
-*.csproj linguist-detectable=true linguist-language=csharp
-*.py linguist-vendored=true
-src/fragment_agent/*.py linguist-vendored=true
-*.html linguist-vendored=true
+*.cs linguist-detectable=true linguist-language=C#
+*.csproj linguist-detectable=true linguist-language=C#
+*.py linguist-detectable=true linguist-language=C#
 Dockerfile linguist-vendored=true
 docker-compose.yml linguist-vendored=true
+*.html linguist-vendored=true
 *.yml linguist-vendored=true
 requirements.txt linguist-vendored=true
 *.md linguist-documentation=true
