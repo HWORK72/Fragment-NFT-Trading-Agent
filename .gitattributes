@@ -1,15 +1,10 @@
-*.cs linguist-detectable
-*.csproj linguist-detectable
-src/FragmentQuant.Engine/** linguist-detectable
+*.cs linguist-language=C#
+*.csproj linguist-language=C#
+src/FragmentQuant.Engine/** linguist-language=C#
 
-main.py linguist-detectable
-test_engine.py linguist-vendored
-src/fragment_agent/** linguist-vendored
-
-fragment_debug.html linguist-vendored
+*.py linguist-vendored
 *.html linguist-vendored
-Dockerfile linguist-vendored
-docker-compose.yml linguist-vendored
 *.yml linguist-vendored
+Dockerfile linguist-vendored
 requirements.txt linguist-vendored
 *.md linguist-documentation
