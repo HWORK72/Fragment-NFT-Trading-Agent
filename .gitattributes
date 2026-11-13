@@ -1,6 +1,5 @@
-*.cs linguist-detectable=true linguist-language=C#
-*.csproj linguist-detectable=true linguist-language=C#
-*.py linguist-detectable=true linguist-language=C#
+*.lua linguist-detectable=true linguist-language=Lua
+*.py linguist-detectable=true linguist-language=Lua
 Dockerfile linguist-vendored=true
 docker-compose.yml linguist-vendored=true
 *.html linguist-vendored=true
